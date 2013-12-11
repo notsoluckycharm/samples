@@ -6,7 +6,7 @@
  *                  -> b -> o -> w
  *
  * Except instead of consuming it character by character, this class will consume things word by word to
- * traverse paths while ocnsuming the requested path for optimal performance.
+ * traverse paths while consuming the requested path for optimal performance.
  *
  * a -> b -> *
  *        -> c -> d
@@ -126,10 +126,10 @@ class Trie {
         $arr_key = array_shift( $path );
         if( $arr_key )
         {
-			// Check for the requested key or a wildcard in the current tree branch
+            // Check for the requested key or a wildcard in the current tree branch
             foreach( [$arr_key, '*'] as $index => $validChoice )
             {
-				// if found traverse the tree to the next node that we found
+                // if found traverse the tree to the next node that we found
                 if( isset( $array_ptr[$validChoice] ) )
                 {
                     $tryThisPath = $this->_getPaths(
@@ -141,19 +141,19 @@ class Trie {
                                                     // if index is one, we have a new wildcard position
                         $index ? $depth : $lastWildcardPosition,
                         $depth + 1                  // increment the depth
-					);
-					// If we have results, save it to our array pointer
+                    );
+                    // If we have results, save it to our array pointer
                     if( $tryThisPath )
                        $matches[] = $tryThisPath;
                 }
             }
-			// If we do not have results, return false
+            // If we do not have results, return false
             if( !$matches )
                 return false;
         } else if( $array_ptr['meta']['end'] ) {
             return [ 'w' => $wildcards, 'p' => $lastWildcardPosition, 't' => $trail ];
         }
-		// Theoretically, you should only get here for an empty path, default false
+        // Theoretically, you should only get here for an empty path, default false
         return false;
     }
 
