@@ -1,8 +1,8 @@
 <?php
-/** Welcome to my code test, please see the attached documentation "problem.txt"
+/** Welcome to my code test, please see the attached documentation "README.md"
  *
  * This attempts to solve for a list of patterns and a list of paths, finding the
- * most optimized pattern that matches the path. Optimized is defined in the
+ * most optimized pattern that matches each path. Optimized is defined in the
  * supplied and included documentation.
  *
  * Loop
@@ -17,10 +17,12 @@
  */
 require 'Trie.php';
 
+// Best practices, let's use non-blocking I/O
 stream_set_blocking( STDIN, 0 );
 $patterns = stream_get_line( STDIN, null, PHP_EOL );
-if( $patterns ) // Valid setup
+if( $patterns ) // Valid setup, we have input from the command line
 {
+    // Create our tree storage mechanism
     $tree = new Trie();
     while( $line =stream_get_line( STDIN, null, PHP_EOL ) )
     {
