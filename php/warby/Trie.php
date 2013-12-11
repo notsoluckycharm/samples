@@ -115,7 +115,6 @@ class Trie {
      *              wildcard used, the index is "rightmost" or from the left
      * @param int $depth Want to break this? Go deep. I didn't do anything with
      *              this parameter, but it would theoretically be your break
-     *
      */
     protected function _getPaths(&$array_ptr, $path, &$matches, $trail = '',
                         $wildcards = 0, $lastWildcardPosition = 0, $depth = 1 )
