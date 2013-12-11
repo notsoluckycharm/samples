@@ -6,7 +6,7 @@
  *                  -> b -> o -> w
  *
  * Except instead of consuming it character by character, this class will consume things word by word to
- * traverse paths while ocnsuming the requested path for optimal performance.
+ * traverse paths while consuming the requested path for optimal performance.
  *
  * a -> b -> *
  *        -> c -> d
