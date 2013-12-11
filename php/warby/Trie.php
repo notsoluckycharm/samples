@@ -47,20 +47,21 @@ class Trie {
         return true;
     }
 
-    /*For each path encountered in the input, print the *best-matching
-    pattern*. The best-matching pattern is the one which matches the path
-    using the fewest wildcards.
-
-    If there is a tie (that is, if two or more patterns with the same number
-    of wildcards match a path), prefer the pattern whose leftmost wildcard
-    appears in a field further to the right. If multiple patterns' leftmost
-    wildcards appear in the same field position, apply this rule recursively
-    to the remainder of the pattern.
-
-    For example: given the patterns `*,*,c` and `*,b,*`, and the path
-    `/a/b/c/`, the best-matching pattern would be `*,b,*`.
-
-    If no pattern matches the path, print `NO MATCH`. */
+    /** For each path encountered in the input, print the *best-matching
+     * pattern*. The best-matching pattern is the one which matches the path
+     * using the fewest wildcards.
+     *
+     * If there is a tie (that is, if two or more patterns with the same number
+     * of wildcards match a path), prefer the pattern whose leftmost wildcard
+     * appears in a field further to the right. If multiple patterns' leftmost
+     * wildcards appear in the same field position, apply this rule recursively
+     * to the remainder of the pattern.
+     *
+     * For example: given the patterns `*,*,c` and `*,b,*`, and the path
+     * `/a/b/c/`, the best-matching pattern would be `*,b,*`.
+     *
+     * If no pattern matches the path, print `NO MATCH`. 
+     */
     public function bestPath($path)
     {
         $path = explode('/', trim( $path, '/' ));
