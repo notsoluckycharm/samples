@@ -7,14 +7,13 @@
  *
  * @author Brad Gunn <hevean@gmail.com>
  */
-$count = 0;
 foreach( range( 2, 100 ) as $index )
 {
     $isPrime = true;
     // Every non-prime should be divisible by one or more of the following numbers
     foreach( [2,3,5,7] as $divisible )
     {
-        // but of course, the numbers themselves are primes. Tricky tricky.
+        // but of course, the numbers themselves are primes. Tricky tricky. Thanks Yesh!
         if( $index != $divisible && $index % $divisible == 0 )
         {
             $isPrime = false;
