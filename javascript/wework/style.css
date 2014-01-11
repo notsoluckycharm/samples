@@ -1,0 +1,213 @@
+/* Sticky footer styles
+-------------------------------------------------- */
+html,
+body {
+  height: 100%;
+  background:#222;
+  /* The html and body elements cannot have any padding or margin. */
+}
+
+/* Wrapper for page content to push down footer */
+#wrap {
+  min-height: 100%;
+  height: 100%;
+  /* Negative indent footer by its height */
+  margin: 0 auto -45px;
+  /* Pad bottom by footer height */
+  padding: 10px 0 60px;
+}
+
+/* Set the fixed height of the footer here */
+#footer {
+  height: 60px;
+  background-color: #f5f5f5;
+}
+
+/* Custom page CSS
+-------------------------------------------------- */
+/* Not required for template or sticky footer method. */
+.container {
+  width: auto;
+  max-width: 960px;
+  padding: 0 15px;
+  height:100%;
+  background:#f5f5f5;
+}
+.container .text-muted {
+  margin: 20px 0;
+}
+.widget-box {
+    padding:10px;
+    border:1px solid #ccc;
+    display:inline-block;
+}
+.box + .box {
+    border-top:1px solid #ccc;
+    padding-top: 10px;
+}
+.location-widget{
+    font-size:1.5rem;
+    border-bottom: 1px solid #ccc;
+    padding: 0px 0px 5px 10px;
+    margin:0px 0px 5px 0px;
+}
+
+/* Loading Spinner */
+.loading {
+    position: absolute;
+    left: 0;
+    background: #222;
+    width: 100%;
+    z-index: 2;
+}
+.bulat {
+    width: 100px;
+    height: 100px;
+    position: relative;
+    margin: 50px auto;
+    cursor: pointer;
+    border-radius: 110px;
+    -webkit-border-radius: 110px;
+}
+#dalbulat {
+    background-color: #222;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    right: 5px;
+    bottom: 5px;
+    z-index: 2;
+    border-radius: 110px;
+    text-align: center;
+    font-size:10px;
+    color:#ccc;
+    line-height: 90px;
+}
+.luarbulat {
+    margin: 0 auto;
+    background: #4FFC38;
+    background: -webkit-radial-gradient(20% 20%, ellipse cover, #00ff00 0%, #21ca00 24%, transparent 74%, transparent 100%);
+    background: radial-gradient(ellipse at 20% 20%, #00FF00 0%, #21CA00 24%, transparent 74%, transparent 100%);
+    border-radius: 110px;
+    padding: 10px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    -webkit-animation-name: rotate;
+    -webkit-animation-duration: 1s;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-timing-function: linear;
+    -moz-animation-name: rotate;
+    -moz-animation-duration: 1s;
+    -moz-animation-iteration-count: infinite;
+    -moz-animation-timing-function: linear;
+    animation-name: rotate;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+#dalbulat span {
+    -webkit-animation:color 1.5s linear infinite;
+    -moz-animation:color 1.5s linear infinite;
+    -ms-animation:color 1.5s linear infinite;
+    -o-animation:color 1.5s linear infinite;
+    animation:color 1.5s linear infinite;
+}
+#dalbulat span:nth-child(1) {
+    -webkit-animation-delay:0s;
+    -moz-animation-delay:0s;
+    -ms-animation-delay:0s;
+    -o-animation-delay:0s;
+    animation-delay:0s;
+}
+#dalbulat span:nth-child(2) {
+    -webkit-animation-delay:.25s;
+    -moz-animation-delay:.25s;
+    -ms-animation-delay:.25s;
+    -o-animation-delay:.25s;
+    animation-delay:.25s;
+}
+#dalbulat span:nth-child(3) {
+    -webkit-animation-delay:.45s;
+    -moz-animation-delay:.45s;
+    -ms-animation-delay:.45s;
+    -o-animation-delay:.45s;
+    animation-delay:.45s;
+}
+#dalbulat span:nth-child(4) {
+    -webkit-animation-delay:.55s;
+    -moz-animation-delay:.55s;
+    -ms-animation-delay:.55s;
+    -o-animation-delay:.55s;
+    animation-delay:.55s;
+}
+#dalbulat span:nth-child(5) {
+    -webkit-animation-delay:.65s;
+    -moz-animation-delay:.65s;
+    -ms-animation-delay:.65s;
+    -o-animation-delay:.65s;
+    animation-delay:.65s;
+}
+#dalbulat span:nth-child(6) {
+    -webkit-animation-delay:.75s;
+    -moz-animation-delay:.75s;
+    -ms-animation-delay:.75s;
+    -o-animation-delay:.75s;
+    animation-delay:.75s;
+}
+#dalbulat span:nth-child(7) {
+    -webkit-animation-delay:.85s;
+    -moz-animation-delay:.85s;
+    -ms-animation-delay:.85s;
+    -o-animation-delay:.85s;
+    animation-delay:.85s;
+}
+@-webkit-keyframes rotate {
+    from {
+        -webkit-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    to {
+        -webkit-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+@-moz-keyframes rotate {
+    from {
+        -webkit-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    to {
+        -webkit-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+@keyframes rotate {
+    from {
+        -webkit-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    to {
+        -webkit-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+@-webkit-keyframes color {
+    0% {
+        color:#fff;
+    }
+    50% {
+        color:transparent;
+    }
+    100% {
+        color:#fff;
+    }
+}

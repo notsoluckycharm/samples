@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="/style.css"/>
+    </head>
+<body>
+
+    <div id="wrap">
+        <!-- Begin page content -->
+        <div class="container">
+            <div class="page-header">
+                <h1>Weather Comparison Code Demo</h1>
+            </div>
+            <div id="disclaimer">
+                <p>
+                    This was done to comply with a 4 hour time requirement, thus the error checking is not as robust as it should and could be for a more
+                    "production" ready application. Started at 3:00pm, ended 7:00pm Sunday January 12th 2014;
+                    <b> Limitations: 10 api calls a minute, 500 a day ( free version ) </b>
+                </p>
+                <p class="lead">
+                    This was done with as few libraries as possible (jquery, underscore) to demonstrate javascript ability.
+                    <b> Note: Sometimes the chosen API is slow, please wait up to 10 seconds</b>
+                </p>
+            </div>
+            <div class="local weather-widget col-md-6"></div>
+            <div class="weather-widget col-md-6"></div>
+        </div>
+    </div>
+
+    <div id="footer">
+        <div class="container">
+            <p class="text-muted">&copy; Brad Gunn 2014</p>
+        </div>
+    </div>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
+    <script src="/script.js"></script>
+
+    <script type="underscore/template" id="weather-widget">
+        <div class="loading">
+            <div class="bulat">
+                <div id="dalbulat">
+                  <span>L</span>
+                  <span>O</span>
+                  <span>A</span>
+                  <span>D</span>
+                  <span>I</span>
+                  <span>N</span>
+                  <span>G</span>
+                </div>
+                <div class="luarbulat"></div>
+            </div>
+        </div>
+        <div class="widget-box">
+            <div class="location"></div>
+            <div class="weather"></div>
+        </div>
+    </script>
+    <script type="underscore/template" id="weather">
+        <div class="col-md-3">
+            <img src="<%= icon_url %>" />
+        </div>
+        <div class="col-md-8">
+            <div class="box">
+                <p>
+                    <%= weather %> <br/>
+                    <span><%= temp_f %>&deg;F/<%= temp_c %>&deg;C</span>
+                </p>
+            </div>
+            <div class="box">
+                <p>
+                    Feels Like <br/>
+                    <span><%= feelslike_f %>&deg;F/<%= feelslike_c %>&deg;C</span>
+                </p>
+            </div>
+            <div class="box">
+                <span>Windspeed: <%= wind_mph %>mph/<%= wind_kph %>kph</span>
+            </div>
+        </div>
+    </script>
+    <script type="underscore/template" id="location">
+        <div class="location-widget">
+            <% if( !local ){ %>
+                <input type="text" name="city" value="<%= city %>"/>,
+                <input type="text" name="state" value="<%= state %>"/>
+                <input type="submit" name="submit" value="go"/>
+            <% } else { %>
+                <span><%= city %>, <%= state %></span>
+            <% } %>
+        </span>
+    </script>
+</body>
+</html>
