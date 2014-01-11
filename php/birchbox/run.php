@@ -12,7 +12,7 @@ foreach( $array as $key => $value ){
     }
     $potentialLoss = $max - $lowest;
     if( $potentialLoss > $maxLoss )
-        $maxLoss = $max - $lowest;
+        $maxLoss = $potentialLoss;
 }
 
 echo $maxLoss;
