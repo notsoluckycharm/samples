@@ -70,7 +70,6 @@ var utilities = (function($,_){
                 },
                 tick: function() {
                     var object = this;
-                    console.log( self.options.endAt, new Date().getTime() );
                     if( self.options.endAt > 0 ) {
                         if( self.options.endAt > 0 && parseInt(self.options.endAt/1000) == parseInt(new Date().getTime()/1000)) {
                             self.options.onEnd(object);
@@ -130,7 +129,7 @@ var views = (function($,_){
                             self.el.find('button.toggle').text('Resume');
                         },
                         onEnd: function(clock){
-                            self.renderStatus('Beep Beep Beep');//.resetTimers();
+                            self.renderStatus('Beep Beep Beep');
                         },
                     }, params ));
                     return this;
