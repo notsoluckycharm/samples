@@ -1,0 +1,280 @@
+<head>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css"/>
+</head>
+<body>
+
+<div id="wrap">
+    <div class="container">
+        <div class="clock col-md-4"></div>
+        <div class="alarm clock col-md-4"></div>
+        <div class="countdown clock col-md-4"></div>
+    </div>
+</div>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js"></script>
+<script>
+var utilities = (function($,_){
+    var widgets = {
+        clock : function(options){
+            var localize = function(time){
+                return time + ( new Date().getTimezoneOffset() * 60000 );
+            }
+            var self = this;
+            this.options = _.extend({
+                //defaults may be overriden
+                step:1000,
+                state:'paused',
+                active:true,
+                time: localize( 0 ),
+                endAt: 0,
+                tick: function(date){},
+                onError: function(error){},
+                onStart: function(clock){},
+                onStop: function(clock){},
+                onEnd: function(clock){}
+            }, options);
+            return {
+                start: function(){
+                    var object = this;
+                    if( self.options.state == 'paused' ){
+                        this.nIntervId = setInterval( function(){
+                            object.tick( object )
+                        }, 1000 );
+                    } else {
+                        self.options.onError.call( self, 'Not Paused' );
+                    }
+                    self.options.state = 'running';
+                    self.options.onStart.call(self, self);
+                },
+                stop: function(){
+                    var object = this;
+                    self.options.state == 'paused' ?
+                        self.options.onError.call( object, 'Already Paused' ) :
+                        clearInterval(this.nIntervId);
+                    self.options.state = 'paused';
+                    self.options.onStop.call(self, self);
+                },
+                set: function(to){
+                    self.options.time = to;
+                    var date = new Date(self.options.time);
+                    self.options.tick( this, date.getHours(), date.getMinutes(), date.getSeconds() );
+                    return this;
+                },
+                endAt: function(to) {
+                    this.set(localize(to));
+                    var now = new Date();
+                    self.options.endAt = new Date(now.getFullYear(),now.getMonth(),now.getDate(),0,0,0).getTime() + to;
+                    return this;
+                },
+                tick: function() {
+                    var object = this;
+                    console.log( self.options.endAt, new Date().getTime() );
+                    if( self.options.endAt > 0 ) {
+                        if( self.options.endAt > 0 && parseInt(self.options.endAt/1000) == parseInt(new Date().getTime()/1000)) {
+                            self.options.onEnd(object);
+                            self.options.endAt + 86400000;
+                        }
+                    } else {
+                        if( self.options.time <= localize(0) ){
+                            self.options.onEnd(object);
+                            this.set(localize(0)).stop();
+                        } else {
+                            var date = new Date(self.options.time);
+                            self.options.time += self.options.step;
+                            self.options.tick( this, date.getHours(), date.getMinutes(), date.getSeconds() );
+                        }
+                    }
+                },
+                isPaused: function(){
+                    return self.options.state == 'paused';
+                },
+                isDisabled: function(){
+                    return self.options.active;
+                },
+                localize: function(time){
+                    return localize(time);
+                },
+                enable: function(bool) {
+                    self.options.active = bool;
+                }
+            }
+        }
+    }
+    return {
+        widgets:widgets
+    };
+})($,_);
+
+var views = (function($,_){
+    return {
+        clock: function(el, params){
+            var hour, minute, second;
+            var view = {
+                el: $(el),
+                template: $("#clock-widget").html(),
+                options: {},
+                init:function(params){
+                    var self = this;
+                    this.clock = new utilities.widgets.clock( _.extend({
+                        tick: this.drawUpdate,
+                        onError: function(text){
+                            self.el.find(".error").text(text);
+                        },
+                        onStart: function(clock){
+                            self.clearStatus();
+                            self.el.find('button.toggle').text('Pause');
+                        },
+                        onStop: function(clock){
+                            self.el.find('button.toggle').text('Resume');
+                        },
+                        onEnd: function(clock){
+                            self.renderStatus('Beep Beep Beep');//.resetTimers();
+                        },
+                    }, params ));
+                    return this;
+                },
+                render:function(params){
+                    var self = this;
+                    this.options = _.extend( this.options, params || {} );
+                    this.el.append( _.template( this.template, this.options ));
+                    this.draw_clock(this.el.find('.canvas').get(0));
+                    this.el.on('click', 'button', function(ev){
+                        self.changeTime();
+                        self.clock.isPaused() ? self.clock.start() : self.clock.stop();
+                    });
+                    this.el.on('change', 'input[type=number]', function(ev){
+                        self.changeTime();
+                    });
+                    return this;
+                },
+                getTotal: function(){
+                    var total = 0;
+                    _.each( this.el.find('input[type=number]'), function(el){
+                        var $el = $(el);
+                        if( $el.val() !== undefined )
+                            total += Math.max(0, $el.val()*$el.data('multiplier')) * 1000;
+                    }, this );
+                    return total;
+                },
+                changeTime: function(){
+                    this.clearStatus();
+                    if( this.options.type == 'alarm' ){
+                        this.clock.endAt( this.getTotal() );
+                    } else {
+                        this.clock.set(this.clock.localize(this.getTotal()));
+                    }
+                    return this;
+                },
+                renderStatus:function(status){
+                    this.el.find('.status').text(status);
+                    return this;
+                },
+                clearStatus:function(){
+                    this.el.find('.status').text('');
+                    return this;
+                },
+                drawUpdate: function(clock, hours, minutes, seconds){
+                    hour.transform("r"+((30*hours)+(minutes/2))+",100,100");
+                    minute.transform("r"+(6*minutes)+",100,100");
+                    second.transform("r"+(6*seconds)+",100,100");
+                },
+                draw_clock: function(ele){
+                    var canvas = Raphael(ele,200, 200);
+                    var hour_sign;
+                    var clock = canvas.circle(100,100,95).attr({"fill":"#f5f5f5","stroke":"#444444","stroke-width":"5"});
+                    for(i=0;i<12;i++){
+                        var start_x = 100+Math.round(80*Math.cos(30*i*Math.PI/180));
+                        var start_y = 100+Math.round(80*Math.sin(30*i*Math.PI/180));
+                        var end_x = 100+Math.round(90*Math.cos(30*i*Math.PI/180));
+                        var end_y = 100+Math.round(90*Math.sin(30*i*Math.PI/180));
+                        hour_sign = canvas.path("M"+start_x+" "+start_y+"L"+end_x+" "+end_y);
+                    }
+                    hour = canvas.path("M100 100L100 50").attr({stroke: "#444444", "stroke-width": 6});
+                    minute = canvas.path("M100 100L100 40").attr({stroke: "#444444", "stroke-width": 4});
+                    second = canvas.path("M100 110L100 25").attr({stroke: "#444444", "stroke-width": 2});
+                    if( this.options.type == 'clock' )
+                        this.clock.set(new Date().getTime());
+                },
+                start: function(){
+                    this.el.find('button').text('Pause');
+                    this.clock.start();
+                }, stop: function(){
+                    this.el.find('button').text('Resume');
+                    this.clock.stop();
+                }, setTime: function(time){
+                    this.clock.set(time);
+                    return this;
+                }, resetTimers: function(){
+                    this.el.find('input[type=number]').each( function(i,e){
+                        $(e).val(0);
+                    });
+                    return this;
+                }
+            };
+            return view.init(params);
+        }
+    }
+})($,_);
+$(function(){
+    var clocks = [];
+    _.each($(".clock"), function(ele){
+        var $ele = $(ele);
+        var clock;
+        if( $ele.hasClass('alarm') ){
+            clock = new views.clock(ele).render({
+                title: 'Alarm',
+                button_text: 'Start',
+                type: 'alarm'
+            });
+        } else if( $ele.hasClass('countdown') ) {
+            clock = new views.clock(ele,{
+                step:-1000
+            }).render({
+                title: 'Countdown',
+                button_text: 'Start',
+                type: 'countdown'
+            });
+        } else {
+            clock = new views.clock(ele).render({
+                title: 'Clock',
+                button_text: 'Pause'
+            }).setTime(new Date().getTime()+1).start();
+        }
+        clocks[clocks.length] = clock;
+    }, this);
+});
+</script>
+
+<script type="underscore/template" id="clock-widget">
+    <div>
+        <%= title %>
+        <div>
+            <div class="status"></div>
+            <div class="canvas"></div>
+        </div>
+        <% if( typeof type !== 'undefined' && type !== 'clock' ){ %>
+            <input type="number" value="0" data-multiplier="3600"/>
+            <input type="number" value="0" data-multiplier="60"/>
+            <input type="number" value="0" data-multiplier="1"/>
+            <br/>
+            <button class="toggle"><%= button_text %></button>
+        <% } %>
+        <span class="error"></span>
+    </div>
+</script>
+
+<style>
+    input[type=number] {
+        width:20%;
+    }
+    .status {
+        position: absolute;
+        z-index: 2;
+        color: 222;
+        top: 55%;
+        left: 16%;
+    }
+</style>
+</body>
