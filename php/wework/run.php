@@ -10,9 +10,7 @@ function probability(&$arr){
         $arr[$index] += $count;
         $count += $value;
     }
-    var_dump($arr);
     $random = mt_rand(0, $count);
-    echo $random;
     foreach($arr as $key => $value){
         if( $value >= $random )
             return $key;
