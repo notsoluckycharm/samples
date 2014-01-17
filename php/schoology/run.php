@@ -45,7 +45,7 @@ foreach( $tests as $test ) {
         while($end-- > 1){
             $substring = substr($test,$start-1,$end+1);
             if( palindrome($substring) )
-                var_dump($substring);//$stringlength = max( $stringlength, strlen($substring) );
+                $stringlength = max( $stringlength, strlen($substring) );
         }
     }
     echo "Longest Palindrome: $stringlength \n";
