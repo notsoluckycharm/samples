@@ -65,6 +65,7 @@ if ( file_exists($file) && $handle = fopen($file, "r") ) {
     // cleanup 
     fclose( $uniques );
     fclose( $fullwords );
+    fclose( $handle );
 
 } else {
     exit( "Missing input file, or unable to read input file." );
